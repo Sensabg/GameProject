@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     int playerX = 100;
     int playerY = 100;
-    int playerSpeed = 5;
+    int playerSpeed = 3;
 
 
 //    enum Direction {
@@ -113,5 +113,4 @@ public class GamePanel extends JPanel implements Runnable {
         g2.fillRect(playerX, playerY, SCALED_TILE_SIZE, SCALED_TILE_SIZE);
         g2.dispose();
     }
-
 }
