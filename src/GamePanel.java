@@ -19,12 +19,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     int playerX = 100;
     int playerY = 100;
-    int playerSpeed = 3;
+    int playerSpeed = 5;
 
 
-//    enum Direction {
-//        UP, LEFT, DOWN, RIGHT, NONE
-//    }
+    enum Direction {
+        UP, LEFT, DOWN, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT, NONE
+    }
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -41,45 +41,90 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+//    @Override
+//    public void run() {
+////      long currentTime = System.nanoTime();
+////      long currentTime2 = System.currentTimeMillis();
+//        double drawInterval = 1_000_000_000 * 1.0 / FPS;
+//        double nextDrawTime = System.nanoTime() + drawInterval;
+//
+//        while (gameThread != null) {
+//            update();
+//            repaint();
+//            try {
+//                double remainTime = (nextDrawTime - System.nanoTime()) / 1_000_000;
+//                remainTime = Math.max(remainTime, 0);
+//
+//                Thread.sleep((long) remainTime);
+//
+//                nextDrawTime += drawInterval;
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     @Override
     public void run() {
-//      long currentTime = System.nanoTime();
-//      long currentTime2 = System.currentTimeMillis();
         double drawInterval = 1_000_000_000 * 1.0 / FPS;
-        double nextDrawTime = System.nanoTime() + drawInterval;
+        long lastTime = System.nanoTime();
+        double delta = 0;
+        long currentTime;
 
         while (gameThread != null) {
-            update();
-            repaint();
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            lastTime = currentTime;
 
-            try {
-                double remainTime = (nextDrawTime - System.nanoTime()) / 1_000_000;
-                remainTime = Math.max(remainTime, 0);
-
-                Thread.sleep((long) remainTime);
-
-                nextDrawTime += drawInterval;
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
             }
-
         }
     }
     public void update() {
-        if (keyH.upPressed) {
-            playerY -= playerSpeed;
-        }
-        if (keyH.leftPressed) {
-            playerX -= playerSpeed;
-        }
-        if (keyH.downPressed) {
-            playerY += playerSpeed;
-        }
-        if (keyH.rightPressed) {
-            playerX += playerSpeed;
+        Direction direction = getPressedDirection();
+
+        switch (direction) {
+
+            case UP -> playerY -= playerSpeed;
+            case DOWN -> playerY += playerSpeed;
+            case LEFT -> playerX -= playerSpeed;
+            case RIGHT -> playerX += playerSpeed;
+
+            case UP_LEFT -> {
+                playerX -= playerSpeed;
+                playerY -= playerSpeed;
+            }
+            case UP_RIGHT -> {
+                playerX += playerSpeed;
+                playerY -= playerSpeed;
+            }
+            case DOWN_LEFT -> {
+                playerX -= playerSpeed;
+                playerY += playerSpeed;
+            }
+            case DOWN_RIGHT -> {
+                playerX += playerSpeed;
+                playerY += playerSpeed;
+            }
         }
     }
+//    public void update() {
+//        if (keyH.upPressed) {
+//            playerY -= playerSpeed;
+//        }
+//        if (keyH.leftPressed) {
+//            playerX -= playerSpeed;
+//        }
+//        if (keyH.downPressed) {
+//            playerY += playerSpeed;
+//        }
+//        if (keyH.rightPressed) {
+//            playerX += playerSpeed;
+//        }
+//    }
 
 //    public void update() {
 //        Direction direction = getPressedDirection();
@@ -91,19 +136,24 @@ public class GamePanel extends JPanel implements Runnable {
 //        }
 //    }
 
-//    private Direction getPressedDirection() {
-//        if (keyH.upPressed) {
-//            return Direction.UP;
-//        } else if (keyH.leftPressed) {
-//            return Direction.LEFT;
-//        } else if (keyH.downPressed) {
-//            return Direction.DOWN;
-//        } else if (keyH.rightPressed) {
-//            return Direction.RIGHT;
-//        } else {
-//            return Direction.NONE;
-//        }
-//    }
+    private Direction getPressedDirection() {
+        boolean up = keyH.upPressed;
+        boolean down = keyH.downPressed;
+        boolean left = keyH.leftPressed;
+        boolean right = keyH.rightPressed;
+
+        if (up && left) return Direction.UP_LEFT;
+        if (up && right) return Direction.UP_RIGHT;
+        if (down && left) return Direction.DOWN_LEFT;
+        if (down && right) return Direction.DOWN_RIGHT;
+
+        if (up) return Direction.UP;
+        if (down) return Direction.DOWN;
+        if (left) return Direction.LEFT;
+        if (right) return Direction.RIGHT;
+
+        return Direction.NONE;
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
