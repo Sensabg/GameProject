@@ -21,9 +21,10 @@ public class GamePanel extends JPanel implements Runnable {
     int playerY = 100;
     int playerSpeed = 5;
 
-    enum Direction {
-        UP, LEFT, DOWN, RIGHT, NONE
-    }
+
+//    enum Direction {
+//        UP, LEFT, DOWN, RIGHT, NONE
+//    }
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -65,31 +66,44 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
     }
-
     public void update() {
-        Direction direction = getPressedDirection();
-
-        switch (direction) {
-            case UP -> playerY -= playerSpeed;
-            case LEFT -> playerX -= playerSpeed;
-            case DOWN -> playerY += playerSpeed;
-            case RIGHT -> playerX += playerSpeed;
-        }
-    }
-
-    private Direction getPressedDirection() {
         if (keyH.upPressed) {
-            return Direction.UP;
-        } else if (keyH.leftPressed) {
-            return Direction.LEFT;
-        } else if (keyH.downPressed) {
-            return Direction.DOWN;
-        } else if (keyH.rightPressed) {
-            return Direction.RIGHT;
-        } else {
-            return Direction.NONE;
+            playerY -= playerSpeed;
+        }
+        if (keyH.leftPressed) {
+            playerX -= playerSpeed;
+        }
+        if (keyH.downPressed) {
+            playerY += playerSpeed;
+        }
+        if (keyH.rightPressed) {
+            playerX += playerSpeed;
         }
     }
+
+//    public void update() {
+//        Direction direction = getPressedDirection();
+//        switch (direction) {
+//            case UP -> playerY -= playerSpeed;
+//            case LEFT -> playerX -= playerSpeed;
+//            case DOWN -> playerY += playerSpeed;
+//            case RIGHT -> playerX += playerSpeed;
+//        }
+//    }
+
+//    private Direction getPressedDirection() {
+//        if (keyH.upPressed) {
+//            return Direction.UP;
+//        } else if (keyH.leftPressed) {
+//            return Direction.LEFT;
+//        } else if (keyH.downPressed) {
+//            return Direction.DOWN;
+//        } else if (keyH.rightPressed) {
+//            return Direction.RIGHT;
+//        } else {
+//            return Direction.NONE;
+//        }
+//    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
