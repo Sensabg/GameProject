@@ -125,17 +125,6 @@ public class GamePanel extends JPanel implements Runnable {
 //            playerX += playerSpeed;
 //        }
 //    }
-
-//    public void update() {
-//        Direction direction = getPressedDirection();
-//        switch (direction) {
-//            case UP -> playerY -= playerSpeed;
-//            case LEFT -> playerX -= playerSpeed;
-//            case DOWN -> playerY += playerSpeed;
-//            case RIGHT -> playerX += playerSpeed;
-//        }
-//    }
-
     private Direction getPressedDirection() {
         boolean up = keyH.upPressed;
         boolean down = keyH.downPressed;
