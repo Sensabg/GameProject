@@ -71,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
         } else if (keyH.rightPressed) {
             return Direction.RIGHT;
         } else {
-            return Direction.NONE; // No key pressed
+            return Direction.NONE;
         }
     }
 
@@ -83,5 +83,4 @@ public class GamePanel extends JPanel implements Runnable {
         g2.fillRect(playerX, playerY, SCALED_TILE_SIZE, SCALED_TILE_SIZE);
         g2.dispose();
     }
-
 }
